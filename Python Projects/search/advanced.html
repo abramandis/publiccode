@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="assets/css/main.css">
+        <title>Advanced Search</title>
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <style>
+            input[type=text] {
+                outline: none !important;
+                min-width:250px;
+                min-height: 6px;
+                border: 1px solid gray;
+                padding: 12px 20px;
+            }   
+            input[type=text]:focus {
+                outline: none !important;
+                border: 1px solid blue  ;
+                box-shadow: 2px 2px 4px rgb(223, 223, 223);
+            }
+            input[type=submit] {
+                min-width:140px;
+                min-height:35px;
+                border-radius: 5px;
+                border: 0px solid #555
+            }
+
+            .goright {
+                align-content: right;
+                text-align: right;
+                width: 50pc;
+            }
+
+            .advancedform {
+                height: 6px;
+                border-color: red;
+                width: 64px;
+             }
+
+             .row {
+                 display: flex;
+             }
+
+             .column {
+                 flex: 25%;
+                 min-width: 200px;
+                 padding: 10px;
+             }
+
+             .words {
+                 height: 36px;
+                 border-color: red;
+             }
+
+             .advancedsubmit {
+                text-align: center;
+                background-color: rgb(3, 151, 236);
+                color: white;
+                border-radius: 30px;
+            }
+
+            .goright {
+                align-content: center;
+                text-align: right;
+            }
+
+            </style>
+    </head>
+    <body>
+        <div class="menu">
+            <a href="index.html">Go Back</a>
+        </div>
+        <div class="container">
+            <div>
+                <form action="https://google.com/search">
+                    <div class="row">
+                        <div class="column">
+                            <div class="words">all these word:</div>
+                            <p></p>
+                            <div class="words">this exact word or phrase:</div>
+                            <p></p>
+                            <div class="words">any of these words:</div>
+                            <p></p>
+                            <div class="words">none of these words:</div>
+                            <p></p>
+                        </div>
+                        <div class="column" style="text-align: right;">
+                           
+                                <input class="advancedform" type="text"  name="q">
+                                <p></p>
+                                <input class="advancedform" type="text" name="as_epq">
+                                <p></p>
+                                <input class="advancedform" type="text" name="as_oq">
+                                <p></p>
+                                <input class="advancedform" type="text" name="as_eq">
+                                <p></p>
+                                <input class="advancedsubmit" type="submit" value="Advanced Search">
+                            
+                        </div>
+                        <div class="column"></div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,32 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia X
+{% endblock %}
+
+{% block body %}
+    <style>
+        input[type=submit].link { border: none; background: none; display: inline; color: blue; text-decoration: underline; }
+    </style>
+    {% if entry %}
+        <h1> {{ title }} </h1> 
+        
+        <!-- <a href="{% url 'encyclopedia:edit' %}">edit</a> -->
+        <form action="{% url 'encyclopedia:edit' %}" method=POST id="editEntryForm">
+            {% csrf_token %}
+            <input value = "Edit" type=submit class="link" />
+            <input type=hidden value= "{{ entry }}" name = "content">
+            <input type=hidden value= "{{ title }}" name = "title">
+        </form>
+        
+        <p>
+            <!-- {{ entry }} -->
+           {{ markdownX | safe }}
+        </p>
+        
+    {% else %}
+        <h1>Error: This page does not Exist.</h1>
+        <h2>Try creating it!</h2>
+    {% endif %}
+
+{% endblock %}
