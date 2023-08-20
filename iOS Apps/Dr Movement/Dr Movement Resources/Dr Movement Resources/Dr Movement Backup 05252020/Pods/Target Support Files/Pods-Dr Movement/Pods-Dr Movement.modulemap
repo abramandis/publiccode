@@ -1,0 +1,6 @@
+framework module Pods_Dr_Movement {
+  umbrella header "Pods-Dr Movement-umbrella.h"
+
+  export *
+  module * { export * }
+}
