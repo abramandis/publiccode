@@ -1,0 +1,44 @@
+<head>
+  <style>
+    .large-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <p style="font-size: 40px;">Redzone Segments</p>
+    <p>Creates new unit conversions .CSV for upload to Redzone SFTP from SAP Master Data.</p>
+    <p>Item Count: <%= @all_segments_data ? @all_segments_data.count : 0 %> </p>
+    <%= link_to "Excel", generate_segments_csv_path, class: "excel_export" %>
+    <thead>
+       <tr>
+            <th>Product Code</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Repeat Name</th>
+            <th>From Value</th>
+            <th>Segment Name</th>
+            <th>To Value</th>
+            <th>To UOM</th>
+            <th>SYNC</th>
+        </tr>
+        
+        <tr>
+        <% if @all_segments_data %>
+          <% @all_segments_data.each do |row| %>
+          <tr>
+          <% (0..8).each do |index| %>
+              <td><%= row[index] %></td>
+          <% end %> 
+          </tr> 
+          <% end %>
+        <% end %>
+        </tr>
+
+    </thead>
+  </table>
+</body>

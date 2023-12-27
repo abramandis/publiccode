@@ -1,0 +1,102 @@
+<head>
+  <style>
+    .large-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <p style="font-size: 40px;">PO Components and Run Quantities <span style="color:red;"> Beta</span></p>
+    <p>Details BOM components for production orders and organizes them by type/category. Shows associated run quantities and details if the bottles are glass.</p>
+    <p>(Can be used to determine material usage, to determine line setup configurations, and for automatic schedule optimization.)</p>
+
+<!-- 
+    <p>
+    <label for="dropdown">Category Type</label>
+    <select id="dropdown" name="category">
+      <option value="apple" selected>Finished Goods</option>
+      <option value="banana">Semi-Finished Goods</option>
+    </select>
+    </p>
+
+    <p>
+    <form method ="POST" action="update_months">
+      <label for="numericInput">Report for last </label> <input type="number" id="numericInput" name="numericValue" min="0" max="100" step="1" value="12"> months 
+      <button type="submit">Submit</button>
+    </form>
+    </p>
+-->
+
+    <p>
+    <%= link_to "Excel", generate_csv_path, class: "excel_export" %>
+    </p>
+
+    <thead>
+       <tr>
+            <th>PO ID</th>
+            <th>Product Code</th>
+            <th>Product Desc</th>
+            <th>Product Type</th>
+            <th>Latest_End</th>
+            <th>Planned Quantity</th>
+            <th>Fulfilled Quantity</th>
+            <th>Status</th> 
+            <th>Glass?</th>
+            <th>Bottle</th>
+            <th>Lid</th>
+            <th>Neck Band</th> 
+            <th>Boxes</th>
+            <th>Dessicant</th>
+            <th>Cotton</th> 
+            <th>Label</th> 
+            <th>Scoop</th>
+            <th>Divider</th>
+            <th>Capsule</th>
+            <th>Consumer Box</th>
+            <th>Tray</th>
+            <th>Sticker</th>
+            <th>Bag</th> 
+            <th>Sachet</th>
+            <th>Stick Pack</th> 
+            <th>Others</th> 
+        </tr>
+        <tr>
+          <% @all_data.each do |product_order| %>
+            <tr>
+              <th><%= product_order.po_id %></th>
+              <th><%= product_order.product_id %></th>
+              <th><%= product_order.product_desc %></th>
+              <th><%= product_order.product_type %></th>
+              <th><%= product_order.latest_end.to_date %></th>
+              <th><%= product_order.planned_quantity %></th>
+              <th><%= product_order.fullfilled_quantity %></th>
+              <th><%= product_order.status%></th>
+              <% codes = get_material_codes(product_order.po_id) %>
+              <th><%= codes["Glass"] %></th> 
+              <th><%= codes["Bottle"] %></th> 
+              <th><%= codes["Lid"] %></th> 
+              <th><%= codes["Neck Band"] %></th> 
+              <th><%= codes["Boxes"] %></th> 
+              <th><%= codes["Dessicant"] %></th> 
+              <th><%= codes["Cotton"] %></th> 
+              <th><%= codes["Label"] %></th> 
+              <th><%= codes["Scoop"] %></th> 
+              <th><%= codes["Divider"] %></th> 
+              <th><%= codes["Capsule"] %></th> 
+              <th><%= codes["Consumer Box"] %></th>
+              <th><%= codes["Tray"] %></th>
+              <th><%= codes["Sticker"] %></th> 
+              <th><%= codes["Bag"] %></th>
+              <th><%= codes["Sachet"] %></th>
+              <th><%= codes["Stick Pack"] %></th>
+              <th style = "width: 100px;"><%= codes["Others"] %></th> 
+            </tr>
+          <% end %>   
+        </tr>
+    </thead>
+  </table>
+</body>

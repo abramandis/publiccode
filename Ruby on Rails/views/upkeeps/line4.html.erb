@@ -1,0 +1,132 @@
+<div class="full-page">
+  <% open = 0 %>
+  <% complete = 0 %>
+  <% progress = 0 %>
+
+  <% if @data != nil %>
+    <% @data.each do |data| %>
+      <% if data["category"] == "Equipment Breakdown (Unplanned)" or data["category"] == "Safety" or data["category"] == "Facilities" or data["category"] == "Project" %>
+        <% data["status"] == "open" ? (open = open + 1) : (open = open + 0) %>
+        <% data["status"] == "complete" ? (complete = complete + 1) : (complete = complete + 0) %>
+        <% data["status"] == "inProgress" ? (progress = progress + 1) : (progress = progress + 0) %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+    <div class="dashboard">
+      <h1 style="text-decoration:underline">Packaging Line 4 Work Orders Summary</h1>
+      <div class="inner-dashboard">
+        <div style="margin: 0 10px 0 10px;">
+          <h2 style="color:darkturquoise">Open: <%= open %></h2>
+        </div>
+        <div style="margin: 0 10px 0 10px;">
+          <h2 style="color:aqua">In Progress: <%= progress %></h2>
+        </div>
+        <div style="margin: 0 10px 0 10px;">
+          <h2 style="color:lightgreen;">Completed: <%= complete %></h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <table cellspacing='0' class="datatable2 display compact upkeep">
+    <thead style="position:sticky; top:0; background-color:white; height: 65px; font-size: 1rem;">
+      <th style="padding: 18px 20px;">Due Date</th>
+      <th style="padding: 18px 20px;">Work Order No.</th>
+      <th style="padding: 18px 20px;">Status</th>
+      <th style="padding: 8px 10px;">Title</th>
+      <th style="padding: 8px 10px;">Description</th>
+      <th style="padding: 8px 10px;">Category</th>
+    </thead>
+    <tbody style="font-weight: bold;">
+      <% if @data != nil %>
+        <% @data.each do |data| %>
+          <% if (data["category"] == "Equipment Breakdown (Unplanned)" or data["category"] == "Safety" or data["category"] == "Facilities" or data["category"] == "Project") %>
+            <% if (data["dueDate"]) and (data["status"] == "complete") and Date.parse(data["dueDate"]).to_s.to_date + 3.days >= Date.today or data["status"] == "open" or data["status"] == "inProgress"%>
+              <tr style="border: 1px solid black; " >
+                <td align=center style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+                                        line-height: 1.2; padding: 18px 20px; background-color: white; font-size: 1.1rem; color: <%= data["status"] == "complete" ? "#8fbc8f" : '' %>;
+                                        color: <%= (data["status"] == "open" and (not data["dueDate"] or Date.parse(data["dueDate"]).past?)) ? "red" : '' %>;" >
+                  <%= data["dueDate"] ? Date.parse(data["dueDate"]).strftime("%-m/%-d/%Y") : "" %>
+                </td>
+                <td align=center style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+                                        line-height: 1.2; padding: 18px 20px; background-color: white; font-size: 1.1rem; color: <%= data["status"] == "complete" ? "#8fbc8f" : '' %>;
+                                        color: <%= (data["status"] == "open" and (not data["dueDate"] or Date.parse(data["dueDate"]).past?)) ? "red" : '' %>;" >
+                  <%= data["workOrderNo"] %>
+                </td>
+                <td align=center style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+                                        line-height: 1.2; padding: 18px 20px; background-color: white; font-size: 1.1rem; color: <%= data["status"] == "complete" ? "#8fbc8f" : '' %>;
+                                        color: <%= (data["status"] == "open" and (not data["dueDate"] or Date.parse(data["dueDate"]).past?)) ? "red" : '' %>;" >
+                  <%= data["status"] %>
+                </td>
+                <td align=center style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+                                        line-height: 1.2; padding: 18px 20px; background-color: white; font-size: 1.1rem; color: <%= data["status"] == "complete" ? "#8fbc8f" : '' %>;
+                                        color: <%= (data["status"] == "open" and (not data["dueDate"] or Date.parse(data["dueDate"]).past?)) ? "red" : '' %>;" >
+                  <%= data["title"] %>
+                </td>
+                <td align=center style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+                                        line-height: 1.2; padding: 18px 20px; background-color: white; font-size: 1.1rem; color: <%= data["status"] == "complete" ? "#8fbc8f" : '' %>;
+                                        color: <%= (data["status"] == "open" and (not data["dueDate"] or Date.parse(data["dueDate"]).past?)) ? "red" : '' %>;" >
+                  <%= data["description"] %>
+                </td>
+                <td align=center style="font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;
+                                        line-height: 1.2; padding: 18px 20px; background-color: white; font-size: 1.1rem; color: <%= data["status"] == "complete" ? "#8fbc8f" : '' %>;
+                                        color: <%= (data["status"] == "open" and (not data["dueDate"] or Date.parse(data["dueDate"]).past?)) ? "red" : '' %>;" >
+                  <%= data["category"] %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+ $(function() {
+    $(".chosen").chosen();
+  }); 
+</script>
+
+<style>
+.full-page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  margin-top: 20px;
+  background-color: white;
+}
+th {
+  border-bottom: 1px solid black;
+}
+.upkeep tbody > tr {
+  height: 140px;
+}
+.dashboard {
+  width: 1000px;
+  border: 1px solid #D3D3D3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+}
+.dataTables_filter input {
+  margin-left: 19px !important;
+  width: 235px;
+  height: 21px;
+}
+.inner-dashboard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 5px 0 5px;
+}
+.format {
+  display: flex;
+  flex-direction: column;
+}
+</style>

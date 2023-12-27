@@ -1,0 +1,89 @@
+<!-- Scripts -->
+<script>
+  // Store the changes in an object
+  var changes = {};
+
+  function updateValueAtCurrentIndex(value, sku) {
+    // Store the change
+    changes[sku] = changes[sku] || {};
+    changes[sku] = value;
+  }
+
+  function submitChanges() {
+    // Convert the changes to a JSON string
+    var changesJson = JSON.stringify(changes);
+
+    // Create a form and submit it
+    var form = document.createElement('form');
+    form.method = 'GET';
+    form.action = '/redzone/create_new_products'; 
+
+    var hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'changes';
+    hiddenInput.value = changesJson;
+
+    form.appendChild(hiddenInput);
+    document.body.appendChild(form);
+
+    form.submit();
+  }
+</script>
+
+<head>
+  <style>
+    .large-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<p style="font-size: 40px; font-weight: bold">Redzone Create New Products</p>
+<p style="color: blue">Creates "products.csv" for upload to Redzone SFTP from SAP Master Data.<br> Primary function is to assign standard run rates to products and ensure all product codes in SAP are available in Redzone.</p>
+<p style="font-weight: bold">Item Count: <%= @all_product_codes ? @all_product_codes.count : 0 %> </p>
+<button class= "large-button" onclick="submitChanges()">Submit Manually Input Override Rate Changes</button><br>
+<%= link_to "Export to CSV", generate_all_products_csv_path, format: :csv, class: "excel_export" %>
+<br><br> 
+<body>
+  <table class="datatable2" style="width:auto;margin-left:5px;">
+    <thead>
+      <tr>
+        <th>Product Code</th>
+        <th>Product Name</th>
+        <th>Category</th>
+        <th>Subcategory</th>
+        <th>UOM</th>
+        <th>Quantity</th>
+        <th>Grams</th>
+        <th>Weight or Count</th>
+        <th>Count or Grams</th>
+        <th>Default Run Rate</th>
+        <th>Run Rate w/ Ranges</th>
+        <th>Manual Override Rate</th> 
+        <th>Run Rate w/ Manual Override</th>
+        <th>SYNC</th>
+        <th>Input Override Rate</th> 
+      </tr>
+    </thead>
+      <% if @all_product_codes %>
+        <% @all_product_codes.each_with_index do |row, row_index| %>
+          <tr>
+          <% (0..13).each do |index| %>
+            <td><%= row[index] %></td>
+            <% if index == 13 %>
+             <td>
+              <!-- input form -->
+              <% sku = row[0] %>
+              <%= number_field_tag "override_rate[#{row[index]}", nil, class: "form-control", onchange: "updateValueAtCurrentIndex(this.value, '#{sku}')" %>
+            </td>
+            <% end %>
+          <% end %> 
+          </tr> 
+        <% end %>
+      <% end %>
+  </table>
+</body>
+
+

@@ -1,3 +1,8 @@
+HTML/SBI_Website/functions/node_modules
+Python/wiki/environment
+iOS Apps/Dr Movement/Pods
+iOS Apps/Dr Movement/Dr MovementTests
+iOS Apps/Dr Movement/Dr MovementUITests
 
 .DS_Store
 iOS Apps/The Tomorrow Planner/.DS_Store 2
@@ -5,10 +10,3 @@ iOS Apps/The Tomorrow Planner/.DS_Store 3
 iOS Apps/The Tomorrow Planner/.DS_Store 4
 iOS Apps/The Tomorrow Planner/.DS_Store 5
 iOS Apps/The Tomorrow Planner/.DS_Store 6
-
-HTML/SBI_Website/functions/node_modules
-Python/wiki/environment
-iOS Apps/Dr Movement/Pods
-iOS Apps/Dr Movement/Dr MovementTests
-iOS Apps/Dr Movement/Dr MovementUITests
-

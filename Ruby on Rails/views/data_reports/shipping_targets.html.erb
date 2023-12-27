@@ -1,0 +1,96 @@
+
+<!-- Date Selector -->
+<% date_options = Array.new(12) { |i| Time.current - 2.months + i.months }.map { |x| [x.strftime("%B %Y"), "#{x.month}-#{x.year}"] } %>
+<%= form_tag({ controller: :data_reports, action: :shipping_targets }, method: :get, id: "month_form") do %>
+    <%= hidden_field_tag :shipping_target, @shipping_target %>
+    <h2 style="text-align:center;">
+    <%= select_tag :selected_date, options_for_select(date_options, "#{@cur_date.month}-#{@cur_date.year}"), style: "font-size:1.5em;", id: "month_select", onchange: "this.form.submit();" %>
+    </h2>
+<% end %>
+
+<h1 style="display:inline"> Daily Shipping Targets Report <span style="color:red;"> Beta </span></h1> 
+<%= link_to "Excel", generate_csv_shipping_targets_path(date: @cur_date.to_date, target: @shipping_target.to_i), class: "excel_export" %> <br><br> 
+
+<!-- Shipping Target Input -->
+Monthly Shipping Target (Input): <br> 
+<%= form_tag({ controller: :data_reports, action: :shipping_targets }, method: :get, id: "shipping_target_form") do %>
+    <%= hidden_field_tag :selected_date, "#{@cur_date.month}-#{@cur_date.year}" %>
+    <input type="text" id="shipping_target_input" style="font-size: 20px;" value="<%= @shipping_target %>" name="shipping_target" onchange: "this.form.submit();">
+    <input type="submit" style="display: none;">
+<% end %>
+<br> 
+Date: <%= @month_name %> <%= @year %> <br>
+Monthly Target: <%= number_to_currency(@shipping_target) %> <br> 
+Daily Shipping Target: <%= number_to_currency(@daily_target) %> <br> 
+Working Days: <%= @working_days %> <br><br> 
+
+<table class="compact display main_table" border=1 cellspacing=0 cellpadding=4 style="border-collapse:collapse; max-width: 100%; overflow-x: auto; table-layout: fixed; font-size: 9.3px ">
+    <thead>
+        <!-- Date -->
+        <tr>
+            <th></th> 
+            <% (1..@days_in_month).each do |date| %>
+                <th style= background-color: darkgrey"><%= date %></th>
+            <% end %>
+        </tr>
+        <!-- Day Names -->
+        <tr>
+            <th></th>
+            <% (1..@days_in_month).each do |day_number| %>
+                <% dayName = @all_day_names[day_number - 1] %>
+                <% if dayName == "Saturday" && !@work_saturdays %>
+                    <th style="background-color: lightgrey;"> <%= dayName %> </th>
+                <% elsif dayName == "Sunday" %>
+                    <th style="background-color: lightgrey;"> <%= dayName %> </th>
+                <% else %>
+                    <th style="background-color: lightblue;"> <%= dayName %> </th>
+                <% end %>
+            <% end %>
+        </tr>
+    </thead> 
+    <tbody> 
+        <!-- Daily Targets -->
+        <tr> 
+            <td> Daily Targets </td> 
+            <% @daily_targets.each do |target| %>
+                <td><%= strip_zeros(number_to_currency(target.round)) %></td> 
+            <% end %>
+        </tr> 
+        <!-- Daily Cumulative Targets -->
+        <tr> 
+            <td> Cumulative Targets </td> 
+            <% @daily_cumulative_targets.each do |target| %>
+                <td><%= strip_zeros(number_to_currency(target.round)) %></td> 
+            <% end %>
+        </tr>
+        <!-- Planned Daily --> 
+        <tr>
+            <td> Planned </td> 
+            <% @daily_planned.each do |planned| %>
+                <td><%= strip_zeros(number_to_currency(planned.round)) %></td>
+            <% end %>
+        </tr> 
+        <!-- Cumulative Planned -->
+        <tr>
+            <td> Cumulative Planned </td>
+            <% @daily_cumulative_planned.each do |planned_cum| %>
+                <td><%= strip_zeros(number_to_currency(planned_cum.round)) %></td>
+            <% end %>
+        </tr> 
+        <!-- Actual -->
+        <tr> 
+            <td> Actuals </td> 
+            <% @daily_actuals.each do |actual| %>
+                <td><%= strip_zeros(number_to_currency(actual.round)) %></td> 
+            <% end %>
+        </tr> 
+        <!-- Cumulative Actuals -->
+        <tr> 
+            <td> Cumulative Actuals </td> 
+            <% @daily_cumulative_actuals.each do |actual_cum| %>
+                <td><%= strip_zeros(number_to_currency(actual_cum.round)) %></td> 
+            <% end %>
+        </tr> 
+    </tbody> 
+</table>
+

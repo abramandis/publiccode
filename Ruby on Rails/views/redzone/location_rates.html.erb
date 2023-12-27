@@ -1,0 +1,59 @@
+<head>
+  <style>
+    .large-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <p style="font-size: 40px;">Redzone Location Rates</p>
+    <p>Creates new products .CSV for upload to Redzone SFTP from SAP Master Data.</p>
+    <p>Item Count: <%= @all_locations_data ? @all_locations_data.count : 0 %> </p>
+    <%= link_to "Excel", generate_location_rates_csv_path, class: "excel_export" %>
+    <thead>
+       <tr>
+            <th>Product Code</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Run Rate</th>
+            <th>Repeat ID</th>
+            <th>Location Area</th>
+            <th>Location Name</th>
+            <th>Location Rate Per Minute</th>
+            <th>SYNC</th>
+        </tr>
+        
+        <tr>
+        <% if @all_locations_data %>
+          <% @all_locations_data.each do |row| %>
+            <tr>
+            <% (0..8).each do |index| %>
+              <td><%= row[index] %></td>
+            <% end %> 
+            </tr> 
+          <% end %>
+        <% end %>
+        </tr>
+    </thead>
+    
+    
+    
+    <!--  
+        <% @all_product_codes.each do |row| %>
+          <tr>
+          <% (0..10).each do |index| %>
+            <td><%= row[index] %></td>
+          <% end %> 
+          </tr> 
+        <% end %>
+
+        </tr>
+    --> 
+    </thead>
+  </table>
+</body>
+
